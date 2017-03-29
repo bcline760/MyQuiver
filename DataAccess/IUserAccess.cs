@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 using MyQuiver.DataAccess.Model;
+using MyQuiver.DataAccess.Filters;
 
 namespace MyQuiver.DataAccess
 {
-    interface IUserAccess
+    public interface IUserAccess
     {
         /// <summary>
         /// 
@@ -15,7 +16,7 @@ namespace MyQuiver.DataAccess
         int CreateUser(User user);
 
 
-        List<User> GetUsers();
+        List<User> GetUsers(UserFilter filter);
 
         /// <summary>
         /// 

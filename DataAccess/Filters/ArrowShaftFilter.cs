@@ -1,4 +1,4 @@
-﻿namespace MyQuiver.DataAccess
+﻿namespace MyQuiver.DataAccess.Filters
 {
     public sealed class ArrowShaftFilter : ComponentFilter
     {

@@ -1,9 +1,9 @@
 ﻿using MyQuiver.DataAccess.Model;
 using System.Collections.Generic;
 
-namespace MyQuiver.DataAccess
+namespace MyQuiver.DataAccess.Filters
 {
-    public class ComponentFilter : Filter
+    public class ComponentFilter
     {
         /// <summary>
         /// Get or set list of manufacturers for filtering
