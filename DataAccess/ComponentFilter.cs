@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using MyQuiver.DataAccess.Model;
+using System.Collections.Generic;
 
 namespace MyQuiver.DataAccess
 {
@@ -7,6 +8,6 @@ namespace MyQuiver.DataAccess
         /// <summary>
         /// Get or set list of manufacturers for filtering
         /// </summary>
-        public List<int> ManufacturerIdList { get; set; }
+        public List<Manufacturer> Manufacturers { get; set; }
     }
 }

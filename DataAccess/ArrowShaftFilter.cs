@@ -1,6 +1,6 @@
 ﻿namespace MyQuiver.DataAccess
 {
-    public sealed class ArrowShaftFilter : Filter
+    public sealed class ArrowShaftFilter : ComponentFilter
     {
         public string ArrowMaterialType { get; set; }
 

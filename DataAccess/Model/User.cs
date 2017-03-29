@@ -14,6 +14,10 @@ namespace MyQuiver.DataAccess.Model
 
         public UserStatus Status { get; set; }
 
+        public AuthenicationProvider Provider { get; set; }
+
+        public string ProviderToken { get; set; }
+
         [StringLength(48, ErrorMessage = "Please enter a shorter first name"), Required]
         public string FirstName { get; set; }
 
