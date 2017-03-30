@@ -5,31 +5,15 @@ using System.Linq;
 
 using MongoDB.Driver;
 
-namespace MyQuiver.DataAccess
+namespace MyQuiver.DataAccess.Repository
 {
-    public abstract class Access
+    public abstract class MongoRepository
     {
-        private string m_connectUrl = null;
         private IMongoDatabase m_database = null;
 
-        /// <summary>
-        /// Construct a new base access object
-        /// </summary>
-        /// <param name="connectUrl">The URL to connect to the Mongo database</param>
-        /// <param name="database">The name of the Mongo database</param>
-        protected Access(string connectUrl, string database)
+        protected MongoRepository(IMongoDatabase database)
         {
-            m_connectUrl = connectUrl;
-            MongoClientSettings settings = new MongoClientSettings
-            {
-                ConnectionMode = ConnectionMode.Automatic,
-                UseSsl = true,
-                ApplicationName = database,
-                Server = new MongoServerAddress(connectUrl)
-            };
-
-            MongoClient client = new MongoClient(settings);
-            var db = client.GetDatabase(database);
+            m_database = database;
         }
 
         /// <summary>
@@ -127,7 +111,6 @@ namespace MyQuiver.DataAccess
             return updateQuery;
         }
 
-        public string ConnectUrl { get => m_connectUrl; }
         public IMongoDatabase Database { get => m_database; }
     }
 }
