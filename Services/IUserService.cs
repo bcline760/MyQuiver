@@ -25,12 +25,11 @@ namespace MyQuiver.Services
         ValueResponse<User> LoadUser(int userId);
 
         /// <summary>
-        /// Authenticate a user with their provider and its token
+        /// Load a user by their e-mail address.
         /// </summary>
-        /// <param name="token">The token given by the authentication provider</param>
-        /// <param name="provider">The provider used for authentication</param>
+        /// <param name="email">The e-mail address of user</param>
         /// <returns>The user object found or null if not found</returns>
-        ValueResponse<User> AuthenticateUser(string token, AuthenicationProvider provider);
+        ValueResponse<User> LoadUser(string email);
 
         /// <summary>
         /// 

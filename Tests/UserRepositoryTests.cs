@@ -19,7 +19,7 @@ namespace MyQuiver.Tests.DataAccess
         {
             var mock = new Mock<IMongoDatabase>();
 
-            //mock.Setup(m => m.GetCollection<User>("Users", null)).Returns
+            mock.Setup(m => m.GetCollection<User>("Users", null)).Returns(new MongoCollectionMock<User>()).Verifiable();
             IUserRepository repository = new UserRepository(mock.Object);
 
             repository.Create(null);
@@ -30,7 +30,7 @@ namespace MyQuiver.Tests.DataAccess
         {
             var mock = new Mock<IMongoDatabase>();
 
-            mock.Setup(m => m.GetCollection<User>("Users", null)).Returns(new MongoCollectionMock<User>());
+            mock.Setup(m => m.GetCollection<User>("Users", null)).Returns(new MongoCollectionMock<User>()).Verifiable();
             IUserRepository repository = new UserRepository(mock.Object);
 
             User user = new User
@@ -39,12 +39,18 @@ namespace MyQuiver.Tests.DataAccess
             };
 
             repository.Create(user);
+            mock.VerifyAll();
         }
 
         [TestMethod]
         public void DeleteUserTest()
         {
             var mock = new Mock<IMongoDatabase>();
+            mock.Setup(m => m.GetCollection<User>("Users", null)).Returns(new MongoCollectionMock<User>()).Verifiable();
+            IUserRepository repository = new UserRepository(mock.Object);
+
+            repository.Delete(It.IsAny<int>());
+            mock.VerifyAll();
         }
     }
 }

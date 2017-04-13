@@ -30,7 +30,8 @@ namespace MyQuiver.DataAccess.Model
         [StringLength(8)]
         public string PostalCode { get; set; }
 
-        public int? CountryId { get; set; }
+        [StringLength(3)]
+        public string CountryCode { get; set; }
 
         [StringLength(256), Required]
         public string Website { get; set; }
@@ -38,7 +39,7 @@ namespace MyQuiver.DataAccess.Model
         [StringLength(256)]
         public string ContactTelephone { get; set; }
 
-        [StringLength(256)]
+        [StringLength(256), Required]
         public string PrimaryManfacturerLogoPath { get; set; }
 
         [StringLength(256)]

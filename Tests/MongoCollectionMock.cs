@@ -53,12 +53,12 @@ namespace MyQuiver.Tests.DataAccess
 
         public DeleteResult DeleteMany(FilterDefinition<TModel> filter, CancellationToken cancellationToken = default(CancellationToken))
         {
-            throw new NotImplementedException();
+            return new DeleteResult.Acknowledged(new Random(DateTime.UtcNow.Millisecond).Next());
         }
 
         public DeleteResult DeleteMany(FilterDefinition<TModel> filter, DeleteOptions options, CancellationToken cancellationToken = default(CancellationToken))
         {
-            throw new NotImplementedException();
+            return new DeleteResult.Acknowledged(new Random(DateTime.UtcNow.Millisecond).Next());
         }
 
         public Task<DeleteResult> DeleteManyAsync(FilterDefinition<TModel> filter, CancellationToken cancellationToken = default(CancellationToken))
