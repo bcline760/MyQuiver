@@ -1,58 +1,68 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using MyQuiver.Common;
-using MyQuiver.DataAccess.Model;
-using MongoDB.Driver;
+using System.Threading.Tasks;
+using System.Linq;
 
-namespace MyQuiver.DataAccess.Repository
+using AutoMapper;
+using MongoDB.Driver;
+using MyQuiver.Contracts;
+using MyQuiver.Model.Filters;
+using MyQuiver.Repository;
+
+namespace MyQuiver.Model.Repository
 {
-    public class LimbRepository : MongoRepository, ILimbRepository
+    internal class LimbRepository : MongoRepository, ILimbRepository
     {
-        private IMongoCollection<Limb> m_collection = null;
+        private IMongoCollection<LimbModel> m_collection = null;
 
         public LimbRepository(IMongoDatabase database) : base(database)
         {
-            m_collection = Database.GetCollection<Limb>(GetCollectionName<Limb>());
+            m_collection = Database.GetCollection<LimbModel>(GetCollectionName<LimbModel>());
         }
 
-        public void Create(Limb model)
+        public async Task Create(Limb newLimb)
         {
-            if (model == null)
-                throw new ArgumentNullException(nameof(model));
+            if (newLimb == null)
+                throw new ArgumentNullException(nameof(newLimb));
 
-            m_collection.InsertOne(model);
+            var model = Mapper.Map<LimbModel>(newLimb);
+
+            await m_collection.InsertOneAsync(model);
         }
 
-        public void Delete(int id)
+        public async Task Delete(Guid id)
         {
-            var filter = Builders<Limb>.Filter.Eq("LimbId", id);
-            DeleteResult result = m_collection.DeleteOne(filter);
+            var filter = new LimbFilter
+            {
+                Id = id
+            };
+
+            var query = GetFilterQuery<LimbModel, LimbFilter>(filter);
+            var results = await m_collection.Find(query).FirstOrDefaultAsync<LimbModel>();
+            if (results != null)
+                await m_collection.DeleteManyAsync(query);
         }
 
-        public List<Limb> FindByDrawWeight(int drawWeight)
+        public async Task<Limb> Get(Guid id)
         {
-            throw new NotImplementedException();
+            var filter = new LimbFilter
+            {
+                Id = id
+            };
+
+            var query = GetFilterQuery<LimbModel, LimbFilter>(filter);
+            var results = await m_collection.Find(query).FirstOrDefaultAsync<LimbModel>();
+
+            return Mapper.Map<Limb>(results);
         }
 
-        public List<Limb> FindByLimbLength(LimbLength length)
+        public async Task Update(Limb limb)
         {
-            throw new NotImplementedException();
-        }
+            var model = Mapper.Map<LimbModel>(limb);
+            var results = await m_collection.ReplaceOneAsync<LimbModel>(q => q.Id == limb.Id, model, new UpdateOptions { IsUpsert = false });
 
-        public List<Limb> FindByLimbMaterial(LimbMaterial material)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Limb Get(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Update(Limb model)
-        {
-            throw new NotImplementedException();
+            if (!results.IsAcknowledged)
+                throw new InvalidOperationException("The update was not acknowledged");
         }
     }
 }

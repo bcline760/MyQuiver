@@ -5,9 +5,9 @@ using System.Linq;
 
 using MongoDB.Driver;
 
-namespace MyQuiver.DataAccess.Repository
+namespace MyQuiver.Model.Repository
 {
-    public abstract class MongoRepository
+    internal abstract class MongoRepository
     {
         private IMongoDatabase m_database = null;
 

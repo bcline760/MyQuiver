@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <RootNamespace>MyQuiver</RootNamespace>
+    <AssemblyName>MyQuiver.Common</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Repository\" />
+    <Folder Include="Contracts\" />
+    <Folder Include="Service\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+    <PackageReference Include="AutoMapper" Version="7.0.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="ISluggable.cs" />
+    <Compile Remove="Repository\IRiserRepository.cs" />
+    <Compile Remove="Repository\IManufactuerRepository.cs" />
+    <Compile Remove="Contracts\Limb.cs" />
+  </ItemGroup>
+</Project>

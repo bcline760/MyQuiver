@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace MyQuiver.Common
+namespace MyQuiver
 {
     /// <summary>
     /// Provides detailed responses if the operation had multiple messages returned

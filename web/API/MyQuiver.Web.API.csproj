@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <RootNamespace>MyQuiver.Web.Api</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\MyQuiver.csproj" />
+    <ProjectReference Include="..\..\Services\MyQuiver.Services.csproj" />
+  </ItemGroup>
+</Project>

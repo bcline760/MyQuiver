@@ -1,4 +1,4 @@
-﻿namespace MyQuiver.Common
+﻿namespace MyQuiver
 {
     public enum BowType
     {

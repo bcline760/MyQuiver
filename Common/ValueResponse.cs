@@ -1,4 +1,4 @@
-﻿namespace MyQuiver.Common
+﻿namespace MyQuiver
 {
     /// <summary>
     /// A response that will return an expected value as a result, such as the ID of a newly inserted record.

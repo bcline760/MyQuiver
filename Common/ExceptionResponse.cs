@@ -1,4 +1,4 @@
-﻿namespace MyQuiver.Common
+﻿namespace MyQuiver
 {
     /// <summary>
     /// Provides application exception information in the response. This is useful in a logging scenario

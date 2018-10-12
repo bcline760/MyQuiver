@@ -1,4 +1,4 @@
-﻿namespace MyQuiver.Common
+﻿namespace MyQuiver
 {
     /// <summary>
     /// Length of International Limb Fitting

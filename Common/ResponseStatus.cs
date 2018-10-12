@@ -1,4 +1,4 @@
-﻿namespace MyQuiver.Common
+﻿namespace MyQuiver
 {
     /// <summary>
     /// Different response conditions from an operation

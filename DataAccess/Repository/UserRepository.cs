@@ -1,100 +1,97 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using System.Threading.Tasks;
 using MongoDB.Driver;
 
-using MyQuiver.DataAccess.Model;
-using MyQuiver.DataAccess.Filters;
+using AutoMapper;
+using MyQuiver.Contracts;
+using MyQuiver.Repository;
+using MyQuiver.Model.Filters;
 
-namespace MyQuiver.DataAccess.Repository
+namespace MyQuiver.Model.Repository
 {
-    public class UserRepository : MongoRepository, IUserRepository
+    internal class UserRepository : MongoRepository, IUserRepository
     {
-        private IMongoCollection<User> m_collection = null;
+        private IMongoCollection<UserModel> m_collection = null;
 
         public UserRepository(IMongoDatabase database) : base(database)
         {
-            m_collection = Database.GetCollection<User>(GetCollectionName<User>());
+            m_collection = Database.GetCollection<UserModel>(GetCollectionName<UserModel>());
         }
 
-        public void Create(User model)
+        public async Task Create(User user)
+        {
+            if (user == null)
+                throw new ArgumentNullException(nameof(user));
+
+            var model = Mapper.Map<UserModel>(user);
+            await m_collection.InsertOneAsync(model);
+        }
+
+        public async Task Delete(Guid id)
+        {
+            UserFilter filter = new UserFilter
+            {
+                Id = id
+            };
+
+            var filterQuery = GetFilterQuery<UserModel, UserFilter>(filter);
+            var result = await m_collection.DeleteManyAsync(filterQuery);
+        }
+
+        public async Task<User> Get(Guid id)
+        {
+            UserFilter filter = new UserFilter
+            {
+                Id = id
+            };
+
+            var filterQuery = GetFilterQuery<UserModel, UserFilter>(filter);
+
+            var user = await m_collection.FindAsync<UserModel>(filterQuery, new FindOptions<UserModel, UserModel>
+            {
+                AllowPartialResults = false,
+                CursorType = CursorType.NonTailable
+            });
+
+            return Mapper.Map<User>(user);
+        }
+
+        public async Task<User> GetByEmail(string emailAddress)
+        {
+            UserFilter filter = new UserFilter
+            {
+                PrimaryEmail = emailAddress
+            };
+
+            var filterQuery = GetFilterQuery<UserModel, UserFilter>(filter);
+            var user = await m_collection.FindAsync<UserModel>(filterQuery, new FindOptions<UserModel, UserModel>
+            {
+                AllowPartialResults = true,
+                CursorType = CursorType.NonTailable
+            });
+
+            return Mapper.Map<User>(user);
+        }
+
+        public async Task Update(User model)
         {
             if (model == null)
                 throw new ArgumentNullException(nameof(model));
 
-            m_collection.InsertOne(model);
+            var entity = Mapper.Map<UserModel>(model);
+            var results = await m_collection.ReplaceOneAsync<UserModel>(q => q.Id == model.Id, entity);
         }
 
-        public void Delete(int id)
-        {
-            UserFilter filter = new UserFilter
-            {
-                UserId = id
-            };
-
-            var filterQuery = GetFilterQuery<User, UserFilter>(filter);
-            var result = m_collection.DeleteMany(filterQuery);
-        }
-
-        public List<User> FindUsers(UserFilter filter)
+        private async Task<List<UserModel>> FindUsersAsync(UserFilter filter)
         {
             if (filter == null)
                 throw new ArgumentNullException(nameof(filter));
 
-            var filterQuery = GetFilterQuery<User, UserFilter>(filter);
-            var users = m_collection.Find(filterQuery);
+            var filterQuery = GetFilterQuery<UserModel, UserFilter>(filter);
+            var users = await m_collection.FindAsync(filterQuery);
 
             return users.ToList();
-        }
-
-        public User Get(int id)
-        {
-            UserFilter filter = new UserFilter
-            {
-                UserId = id
-            };
-
-            var filterQuery = GetFilterQuery<User, UserFilter>(filter);
-
-            var user = m_collection.Find(filterQuery, new FindOptions
-            {
-                AllowPartialResults = false,
-                CursorType = CursorType.NonTailable
-            }).FirstOrDefault();
-            return user;
-        }
-
-        public User GetByEmail(string emailAddress)
-        {
-            UserFilter filter = new UserFilter
-            {
-                PrimaryEmail=emailAddress
-            };
-
-            var filterQuery = GetFilterQuery<User, UserFilter>(filter);
-
-            var user = m_collection.Find(filterQuery, new FindOptions
-            {
-                AllowPartialResults = false,
-                CursorType = CursorType.NonTailable
-            }).FirstOrDefault();
-            return user;
-        }
-
-        public void Update(User model)
-        {
-            if (model == null)
-                throw new ArgumentNullException(nameof(model));
-
-            UserFilter filter = new UserFilter
-            {
-                UserId = model.UserId
-            };
-
-            var filterQuery = GetFilterQuery<User, UserFilter>(filter);
-            UpdateDefinition<User> updateQuery = GetUpdateDefinition<User>(model);
-
-            var result = m_collection.UpdateMany(filterQuery, updateQuery);
         }
     }
 }

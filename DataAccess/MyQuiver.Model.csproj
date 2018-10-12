@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <RootNamespace>MyQuiver.Model</RootNamespace>
+    <AssemblyName>MyQuiver.DataAccess</AssemblyName>
+    <Description>This assembly provides the data access components</Description>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="MongoDB.Driver" Version="2.7.0" />
+    <PackageReference Include="AutoMapper" Version="7.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Common\MyQuiver.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Repository\" />
+    <Folder Include="Filters\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Impl\Repository.cs" />
+    <Compile Remove="StateProvince.cs" />
+    <Compile Remove="Country.cs" />
+    <Compile Remove="Filters\ArrowShaftFilter.cs" />
+    <Compile Remove="EventFormatModel.cs" />
+  </ItemGroup>
+</Project>

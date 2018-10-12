@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using MyQuiver.Common;
-using MyQuiver.DataAccess.Model;
-using MyQuiver.DataAccess;
+using System.Threading.Tasks;
+using MyQuiver;
+using MyQuiver.Model.Model;
+using MyQuiver.Model;
 
 namespace MyQuiver.Services.Implementation
 {
@@ -15,7 +15,7 @@ namespace MyQuiver.Services.Implementation
             m_repository = repository;
         }
 
-        public Response DeleteUser(int userId)
+        public async Task<Response> DeleteUser(int userId)
         {
             ValueResponse<object> response = new ValueResponse<object>
             {
@@ -23,7 +23,7 @@ namespace MyQuiver.Services.Implementation
             };
             try
             {
-                m_repository.Delete(userId);
+                await m_repository.Delete(userId);
             }
             catch (MongoDB.Driver.MongoDuplicateKeyException dupEx)
             {
@@ -44,33 +44,33 @@ namespace MyQuiver.Services.Implementation
             return response;
         }
 
-        public ValueResponse<User> LoadUser(int userId)
+        public async Task<ValueResponse<UserModel>> LoadUser(int userId)
         {
-            ValueResponse<User> valueResponse = new ValueResponse<User>
+            ValueResponse<UserModel> valueResponse = new ValueResponse<UserModel>
             {
                 Status = ResponseStatus.Success
             };
 
-            User user = m_repository.Get(userId);
+            UserModel user = await m_repository.Get(userId);
             valueResponse.Value = user;
             valueResponse.Status = user == null ? ResponseStatus.Error : ResponseStatus.Success;
             return valueResponse;
         }
 
-        public ValueResponse<User> LoadUser(string email)
+        public async Task<ValueResponse<UserModel>> LoadUser(string email)
         {
-            ValueResponse<User> valueResponse = new ValueResponse<User>
+            ValueResponse<UserModel> valueResponse = new ValueResponse<UserModel>
             {
                 Status = ResponseStatus.Success
             };
 
-            User user = m_repository.GetByEmail(email);
+            UserModel user = await m_repository.GetByEmail(email);
             valueResponse.Value = user;
             valueResponse.Status = user == null ? ResponseStatus.Error : ResponseStatus.Success;
             return valueResponse;
         }
 
-        public ValueResponse<int> SaveUser(User user)
+        public async Task<ValueResponse<int>> SaveUser(UserModel user)
         {
             Response validationResponse = ValidateInput(user, "User");
 
@@ -82,9 +82,9 @@ namespace MyQuiver.Services.Implementation
                 try
                 {
                     if (user.UserId == 0)
-                        m_repository.Create(user);
+                        await m_repository.Create(user);
                     else
-                        m_repository.Update(user);
+                        await m_repository.Update(user);
                 }
                 catch (MongoDB.Driver.MongoDuplicateKeyException dupEx)
                 {

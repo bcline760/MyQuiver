@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 
-namespace MyQuiver.Common
+namespace MyQuiver
 {
     /// <summary>
     /// Foundation of all response message types

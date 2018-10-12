@@ -1,6 +1,6 @@
 ﻿using MongoDB.Driver;
-using MyQuiver.Common;
-using MyQuiver.DataAccess;
+using MyQuiver;
+using MyQuiver.Model;
 using System;
 using System.Collections.Generic;
 using System.Text;

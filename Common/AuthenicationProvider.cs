@@ -1,4 +1,4 @@
-﻿namespace MyQuiver.Common
+﻿namespace MyQuiver
 {
     /// <summary>
     /// Authentication providers that users can use to register for the application
