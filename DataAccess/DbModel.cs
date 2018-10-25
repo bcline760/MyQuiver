@@ -7,9 +7,9 @@ namespace MyQuiver.Model
 {
     [BsonIgnoreExtraElements]
     [BsonDiscriminator(RootClass = true)]
-    [BsonKnownTypes(typeof(UserModel), typeof(UserBowModel), typeof(ArcheryEventModel),
-                    typeof(RiserModel), typeof(OrganizationModel), typeof(GoverningBodyModel),
-                    typeof(ManufacturerModel), typeof(LimbModel), typeof(GoverningBodyPtr))]
+    [BsonKnownTypes(typeof(UserModel), typeof(ArcheryEventModel),
+                    typeof(OrganizationModel), typeof(GoverningBodyModel),
+                    typeof(LimbModel), typeof(GoverningBodyPtr))]
     public abstract class DbModel<T> where T : class
     {
         public DbModel()

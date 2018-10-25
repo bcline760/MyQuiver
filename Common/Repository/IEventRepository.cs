@@ -5,7 +5,7 @@ using MyQuiver.Contracts;
 
 namespace MyQuiver.Repository
 {
-    public interface IEventRepository : IRepository<ArcheryEvent, Guid>
+    public interface IEventRepository : IRepository<ArcheryEvent>
     {
         /// <summary>
         /// Gets the events between start and end dates

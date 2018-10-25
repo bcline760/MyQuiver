@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using MyQuiver;
-using MyQuiver.Model.Model;
+
+using MyQuiver.Repository;
 using MyQuiver.Model;
+using MyQuiver.Contracts;
 
 namespace MyQuiver.Services.Implementation
 {
@@ -15,7 +17,7 @@ namespace MyQuiver.Services.Implementation
             m_repository = repository;
         }
 
-        public async Task<Response> DeleteUser(int userId)
+        public async Task<Response> DeleteUser(Guid userId)
         {
             ValueResponse<object> response = new ValueResponse<object>
             {
@@ -44,33 +46,33 @@ namespace MyQuiver.Services.Implementation
             return response;
         }
 
-        public async Task<ValueResponse<UserModel>> LoadUser(int userId)
+        public async Task<ValueResponse<User>> LoadUser(Guid userId)
         {
-            ValueResponse<UserModel> valueResponse = new ValueResponse<UserModel>
+            ValueResponse<User> valueResponse = new ValueResponse<User>
             {
                 Status = ResponseStatus.Success
             };
 
-            UserModel user = await m_repository.Get(userId);
+            User user = await m_repository.Get(userId);
             valueResponse.Value = user;
             valueResponse.Status = user == null ? ResponseStatus.Error : ResponseStatus.Success;
             return valueResponse;
         }
 
-        public async Task<ValueResponse<UserModel>> LoadUser(string email)
+        public async Task<ValueResponse<User>> LoadUser(string email)
         {
-            ValueResponse<UserModel> valueResponse = new ValueResponse<UserModel>
+            ValueResponse<User> valueResponse = new ValueResponse<User>
             {
                 Status = ResponseStatus.Success
             };
 
-            UserModel user = await m_repository.GetByEmail(email);
+            User user = await m_repository.GetByEmail(email);
             valueResponse.Value = user;
             valueResponse.Status = user == null ? ResponseStatus.Error : ResponseStatus.Success;
             return valueResponse;
         }
 
-        public async Task<ValueResponse<int>> SaveUser(UserModel user)
+        public async Task<ValueResponse<int>> SaveUser(User user)
         {
             Response validationResponse = ValidateInput(user, "User");
 
@@ -81,7 +83,7 @@ namespace MyQuiver.Services.Implementation
             {
                 try
                 {
-                    if (user.UserId == 0)
+                    if (user.Id==Guid.Empty)
                         await m_repository.Create(user);
                     else
                         await m_repository.Update(user);
